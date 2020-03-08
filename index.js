@@ -13,12 +13,15 @@ const Layout = {
 const EditorTypes = {};
 (function() {
     const TextEditor = require("./editors/texteditor").TextEditor;
+    const DirectoryEditor = require("./editors/directoryeditor").DirectoryEditor;
     EditorTypes["default"] = (path) => {return new TextEditor(path)};
+    EditorTypes["directory"] = (path) => {return new DirectoryEditor(path)};
 })();
 const FileTypes = {
     "txt": "default"
 };
 function getEditorType(filename) {
+    if (fs.statSync(filename).isDirectory()) return "directory";
     const arr = filename.split(".");
     const type = arr[arr.length - 1];
     return (FileTypes[type]? FileTypes[type] : "default");
