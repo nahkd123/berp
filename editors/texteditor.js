@@ -42,13 +42,14 @@ class TextEditor extends Editor {
                 this.redrawLine = -1;
             }
             if (line !== undefined) {
-                process.stdout.write(`\x1b[${y + i + 1};${x + 1}H\x1b[90m${fillWidthBefore(i + this.scroll.Y + 1 + "", 3)} \x1b[0m` + line.substr(this.scroll.X));
+                process.stdout.write(`\x1b[${y + i + 1};${x + 1}H\x1b[90m${fillWidthBefore(i + this.scroll.Y + 1 + "", 3)} \x1b[0m` + line.substr(this.scroll.X, w - 5));
             }
         }
 
         process.stdout.write(`\x1b[${this.cursor.Y - this.scroll.Y + 1};${this.cursor.X - this.scroll.X + x + 5}H`);
     }
     handleKeyPress(str, key, x, y, w, h) {
+        h--;
         if (key.name === "up") {
             if (this.cursor.Y > 0) {
                 this.cursor.Y--;
@@ -115,6 +116,12 @@ class TextEditor extends Editor {
             this.redrawAll = true;
         } else if (this.cursor.Y < this.scroll.Y) {
             this.scroll.Y = this.cursor.Y;
+            this.redrawAll = true;
+        } else if (this.cursor.X > (this.scroll.X + (w - 15))) {
+            this.scroll.X = this.cursor.X - (w - 15);
+            this.redrawAll = true;
+        } else if (this.cursor.X < this.scroll.X) {
+            this.scroll.X = this.cursor.X;
             this.redrawAll = true;
         }
     }
