@@ -1,0 +1,39 @@
+html {
+    width: 100%;
+}
+body {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+}
+
+div.section {
+    padding: 5vh 7vw;
+    position: relative;
+    overflow: hidden;
+}
+
+div.section.header {
+    background-color: #161616;
+    color: white;
+    height: 35vh;
+}
+div.section.header > h1 {
+    font-family: Consolas, monospace;
+    font-size: 8vh;
+}
+div.section.header > p {
+    font-family: Consolas, monospace;
+    font-size: 2.5vh;
+}
+div.section.header > terminal {
+    position: absolute;
+    top: 10vh; left: 50vw;
+}
+
+code {
+    background-color: #ebebeb;
+    padding: 0.5vw 1vw;
+    border-radius: 1vw;
+}
