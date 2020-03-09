@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const readline = require("readline");
 const fs = require("fs");
+const path = require("path");
 const Layout = {
     Editors: {},
     EditorsList: {
@@ -49,8 +50,8 @@ function renderEditorsList() {
         process.stdout.write(`\x1b[1;1H\x1b[90m(no opened editor)\x1b[0m`);
         process.stdout.write(`\n\x1b[90m * Ctrl + N to create\x1b[0m`);
     } else for (var i = 0; i < editors.length; i++) {
-        if (i === selected) process.stdout.write(`\x1b[7m\x1b[${i + 1};1H   ${maxWidth((editors[i].modified? "*" : "") + editors[i].file, Layout.EditorsList.Width - 3)}\x1b[0m`);
-        else process.stdout.write(`\x1b[${i + 1};1H   ${maxWidth((editors[i].modified? "*" : "") + editors[i].file, Layout.EditorsList.Width - 3)}`);
+        if (i === selected) process.stdout.write(`\x1b[7m\x1b[${i + 1};1H   ${maxWidth((editors[i].modified? "*" : "") + path.basename(editors[i].file).substr(0, Layout.EditorsList.Width - 4), Layout.EditorsList.Width - 3)}\x1b[0m`);
+        else process.stdout.write(`\x1b[${i + 1};1H   ${maxWidth((editors[i].modified? "*" : "") + path.basename(editors[i].file).substr(0, Layout.EditorsList.Width - 4), Layout.EditorsList.Width - 3)}`);
     }
 }
 
@@ -132,6 +133,10 @@ function render() {
     process.stdout.write("\x1b[?25h");
 }
 
+const InternalFunctions = {
+    processCommand: processCommand
+};
+
 process.stdout.write("\x1b[?1049h\x1b[5 q");
 render();
 readline.emitKeypressEvents(process.stdin);
@@ -197,7 +202,7 @@ process.stdin.on("keypress", (str, key) => {
         Con.cursorX = 5;
         render();
     } else if (selected !== -1) {
-        if (!Con.pop) editors[selected].handleKeyPress(str, key, Layout.EditorsList.Width + 1, 0, TTYWidth - Layout.EditorsList.Width - 1, TTYHeight - (Con.pop? Layout.Console.Height + 1 : 1));
+        if (!Con.pop) editors[selected].handleKeyPress(str, key, Layout.EditorsList.Width + 1, 0, TTYWidth - Layout.EditorsList.Width - 1, TTYHeight - (Con.pop? Layout.Console.Height + 1 : 1), InternalFunctions);
         else consoleKeyHandler(str, key);
         render();
     } else {

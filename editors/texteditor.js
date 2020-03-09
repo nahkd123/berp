@@ -48,7 +48,7 @@ class TextEditor extends Editor {
 
         process.stdout.write(`\x1b[${this.cursor.Y - this.scroll.Y + 1};${this.cursor.X - this.scroll.X + x + 5}H`);
     }
-    handleKeyPress(str, key, x, y, w, h) {
+    handleKeyPress(str, key, x, y, w, h, controller) {
         h--;
         if (key.name === "up") {
             if (this.cursor.Y > 0) {

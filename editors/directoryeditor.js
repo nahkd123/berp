@@ -34,18 +34,35 @@ class DirectoryEditor extends Editor {
         }
         process.stdout.write(`\x1b[${y + this.cursorY - this.scrollY + 2};${x + 1}H`);
     }
-    handleKeyPress(str, key, x, y, w, h) {
+    handleKeyPress(str, key, x, y, w, h, controller) {
+        h--;
         if (key.name === "up") {
             if (this.cursorY > 0) this.cursorY--;
         } else if (key.name === "down") {
-            if (this.cursorY < this.files.length) this.cursorY++;
+            if (this.cursorY < this.files.length - 1) this.cursorY++;
         } else if (key.name === "return") {
-            this.file = path.join(this.file, this.files[this.cursorY]);
-            this.files = fs.readdirSync(this.file);
-            this.files.unshift("..");
-            this.files.unshift(".");
-            this.scrollY = 0;
-            this.cursorY = 0;
+            const filePath = path.join(this.file, this.files[this.cursorY]);
+            if (!fs.statSync(filePath).isDirectory()) {
+                controller.processCommand("open " + filePath);
+            } else {
+                this.file = filePath;
+                this.files = fs.readdirSync(this.file);
+                this.files.unshift("..");
+                this.files.unshift(".");
+                this.scrollY = 0;
+                this.cursorY = 0;
+                this.redrawAll = true;
+            }
+        } else if (key.name === "enter") {
+            const filePath = path.join(this.file, this.files[this.cursorY]);
+            controller.processCommand("open " + filePath);
+        }
+
+        if (this.cursorY > this.scrollY + (h - 1)) {
+            this.scrollY = this.cursorY - (h - 1);
+            this.redrawAll = true;
+        } else if (this.cursorY < this.scrollY) {
+            this.scrollY = this.cursorY;
             this.redrawAll = true;
         }
     }
