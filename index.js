@@ -130,7 +130,7 @@ function processCommand(cmd) {
         Con.display.push("\x1b[94mstage-all | add-all          \x1b[0m Stage all files");
         Con.display.push("\x1b[94mstage | add                  \x1b[0m Stage current opened file");
         Con.display.push("\x1b[94mcommit                       \x1b[0m Commit staged files");
-        Con.display.push("\x1b[94mforce-commit                 \x1b[0m Force to commit all unstaged files");
+        // Con.display.push("\x1b[94mforce-commit                 \x1b[0m Force to commit all unstaged files");
         Con.display.push("\x1b[94mpush                         \x1b[0m Push to remote");
     } else if (cmd.startsWith("open ") || cmd.startsWith("new ")) {
         const name = cmd.substr(4).trim();
@@ -177,10 +177,24 @@ function processCommand(cmd) {
                     runShellTask("git commit -F .git/COMMIT_EDITMSG");
                 }, 10);
             };
-            editor.lines = ["# Commit message", "# All lines starts with '#' will be ignored by Git", ""];
+            editor.lines = [
+                "<message here>",
+                "",
+                "Problem/Tasks:",
+                "* <task #1>",
+                "* ...",
+                "",
+                "Notes:",
+                "- <note here>..."
+            ];
             process.stdout.write("\x1b[2J\x1b[0;0H");
 
             Con.display.push("\x1b[90mWaiting you to close editor...\x1b[0m");
+        }
+    } else if (splited[0] === "push") {
+        if (!isGitRepo) Con.display.push("\x1b[91mThis isn't Git Repo!\x1b[0m");
+        else {
+            // Push to remote
         }
     }
 }
