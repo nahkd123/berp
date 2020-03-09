@@ -180,12 +180,11 @@ function processCommand(cmd) {
             editor.lines = [
                 "<message here>",
                 "",
-                "Problem/Tasks:",
-                "* <task #1>",
+                "Problems ans Solutions/Tasks:",
+                "* ...",
                 "* ...",
                 "",
-                "Notes:",
-                "- <note here>..."
+                "Note: (no note)"
             ];
             process.stdout.write("\x1b[2J\x1b[0;0H");
 
