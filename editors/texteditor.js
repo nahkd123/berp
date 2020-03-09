@@ -27,6 +27,8 @@ class TextEditor extends Editor {
 
         this.redrawLine = -1;
         this.redrawAll = false;
+
+        this.saveEvent = null;
     }
 
     draw(x, y, w, h) {
@@ -132,6 +134,8 @@ class TextEditor extends Editor {
             stream.close();
         });
         this.modified = false;
+        
+        if (this.saveEvent !== null) this.saveEvent(this);
     }
 }
 
