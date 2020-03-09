@@ -36,6 +36,7 @@ const FileTypes = {
     "txt": "default"
 };
 function getEditorType(filename) {
+    if (!fs.existsSync(filename)) return "default";
     if (fs.statSync(filename).isDirectory()) return "directory";
     const arr = filename.split(".");
     const type = arr[arr.length - 1];
