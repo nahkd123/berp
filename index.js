@@ -280,7 +280,7 @@ process.stdin.on("keypress", (str, key) => {
             }
             render();
         }
-    } else if (key.name === "w" && key.ctrl) {
+    } else if ((key.name === "w" && key.ctrl) || key.name === "escape") {
         closeCurrentEditor();
     } else if (key.sequence === "\x1b\x1b[A" && selected > 0) {
         selected--;
