@@ -132,6 +132,7 @@ function processCommand(cmd) {
         Con.display.push("\x1b[94mcommit [Remote] [Branch]     \x1b[0m Commit staged files");
         // Con.display.push("\x1b[94mforce-commit                 \x1b[0m Force to commit all unstaged files");
         Con.display.push("\x1b[94mpush                         \x1b[0m Push to remote");
+        Con.display.push("\x1b[94mpull                         \x1b[0m Pull from remote");
     } else if (cmd.startsWith("open ") || cmd.startsWith("new ")) {
         const name = cmd.substr(4).trim();
         selected = editors.push(EditorTypes[getEditorType(name)](name)) - 1;
@@ -197,6 +198,12 @@ function processCommand(cmd) {
         else {
             Con.display.push("\x1b[90mPushing to remote...\x1b[0m");
             runShellTask("git push " + cmd.substr(5));
+        }
+    } else if (splited[0] === "pull") {
+        if (!isGitRepo) Con.display.push("\x1b[91mThis isn't Git Repo!\x1b[0m");
+        else {
+            Con.display.push("\x1b[90mPulling from remote...\x1b[0m");
+            runShellTask("git pull " + cmd.substr(5));
         }
     }
 }
