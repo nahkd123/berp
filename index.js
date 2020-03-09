@@ -9,13 +9,6 @@ const isGitRepo = fs.existsSync(".git");
 const repoBranch = isGitRepo? gitUtils.getBranch("./") : null;
 const args = process.argv.splice(2);
 
-if (args.length === 1) {
-    if (args[0] === "--version" || args[0] === "-v") {
-        process.stdout.write("v1.0.0\n");
-        process.exit(0);
-    }
-}
-
 const Layout = {
     Editors: {},
     EditorsList: {
@@ -35,6 +28,7 @@ const EditorTypes = {};
 const FileTypes = {
     "txt": "default"
 };
+
 function getEditorType(filename) {
     if (!fs.existsSync(filename)) return "default";
     if (fs.statSync(filename).isDirectory()) return "directory";
@@ -46,6 +40,28 @@ const TTYWidth = process.stdout.columns || 80;
 const TTYHeight = process.stdout.rows || 25;
 var editors = [];
 var selected = -1;
+
+(function() {
+    var openList = [];
+    args.forEach(arg => {
+        if (arg === "--help" || arg === "-?") {
+            process.stdout.write("berp v1.0.0\n");
+            process.stdout.write("\n");
+            process.stdout.write("    berp [--help -?] [--version -v] files...\n");
+            process.stdout.write("\n");
+            process.stdout.write("    --help  -?           Get help\n");
+            process.stdout.write("    --version  -v        Get current version, with exit code = version number\n");
+            process.exit(0);
+        } else if (arg === "--version" || arg === "-v") {
+            process.stdout.write("v1.0.0\n");
+            process.exit(1);
+        } else openList.push(arg);
+    });
+    if (openList.length > 0) {
+        selected = 0;
+        openList.forEach(fname => {editors.push(EditorTypes[getEditorType(fname)](fname))});
+    }
+})();
 
 function maxWidth(str, width) {
     width -= str.length;
