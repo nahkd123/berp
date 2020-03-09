@@ -83,12 +83,14 @@ class TextEditor extends Editor {
         else if (key.name === "backspace") {
             if (this.cursor.X > 0) {
                 // BS
+                this.modified = true;
                 const old = this.lines[this.cursor.Y];
                 this.lines[this.cursor.Y] = old.substr(0, this.cursor.X - 1) + old.substr(this.cursor.X);
                 this.cursor.X--;
                 this.redrawLine = this.cursor.Y;
             } else if (this.cursor.Y > 0) {
                 // Remove line
+                this.modified = true;
                 const old = this.lines[this.cursor.Y];
                 this.lines.splice(this.cursor.Y, 1);
                 this.cursor.Y--;
