@@ -44,7 +44,7 @@ class TextEditor extends Editor {
                 this.redrawLine = -1;
             }
             if (line !== undefined) {
-                process.stdout.write(`\x1b[${y + i + 1};${x + 1}H\x1b[90m${fillWidthBefore(i + this.scroll.Y + 1 + "", 3)} \x1b[0m` + line.substr(this.scroll.X, w - 5));
+                process.stdout.write(`\x1b[${y + i + 1};${x + 1}H\x1b[90m${fillWidthBefore(i + this.scroll.Y + 1 + "", 3)} \x1b[0m` + line.substr(this.scroll.X, w - 5).replace(/\x1b/g, "\x1b[94m[\x1b[0m"));
             }
         }
 
@@ -109,6 +109,7 @@ class TextEditor extends Editor {
             // Type str
             this.modified = true;
             if (key.name === "tab") str = "    ";
+            str = str.replace("←", "\x1b");
             const old = this.lines[this.cursor.Y];
             this.lines[this.cursor.Y] = old.substr(0, this.cursor.X) + str + old.substr(this.cursor.X);
             this.cursor.X += str.length;
