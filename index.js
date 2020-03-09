@@ -78,8 +78,14 @@ var Con = {
 };
 function runShellTask(shell) {
     childProcess.exec(shell, (error, stdout, stderr) => {
-        if (stderr) stderr.split("\n").forEach((a) => {Con.display.push("\x1b[91m" + a + "\x1b[0m");});
-        stdout.split("\n").forEach((a) => {Con.display.push(a + "\x1b[0m");});
+        if (stderr) stderr.split("\n").forEach((a) => {
+            Con.display.push("\x1b[91m" + a + "\x1b[0m");
+            render();
+        });
+        stdout.split("\n").forEach((a) => {
+            Con.display.push(a + "\x1b[0m");
+            render();
+        });
     }).on("exit", (code, signal) => {
         Con.display.push("\x1b[90mTask executed (" + code + ")\x1b[0m");
         if (Con.pop) {
