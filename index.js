@@ -180,7 +180,9 @@ function processCommand(cmd) {
             editor.lines = [
                 "<message here>",
                 "",
-                "Problems ans Solutions/Tasks:",
+                "Description: ",
+                "",
+                "Problems and Solutions/Tasks:",
                 "* ...",
                 "* ...",
                 "",
@@ -188,7 +190,7 @@ function processCommand(cmd) {
             ];
             process.stdout.write("\x1b[2J\x1b[0;0H");
 
-            Con.display.push("\x1b[90mWaiting you to close editor...\x1b[0m");
+            Con.display.push("\x1b[90mWaiting you to save file in editor...\x1b[0m");
         }
     } else if (splited[0] === "push") {
         if (!isGitRepo) Con.display.push("\x1b[91mThis isn't Git Repo!\x1b[0m");
