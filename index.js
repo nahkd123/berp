@@ -195,7 +195,7 @@ function processCommand(cmd) {
         if (!isGitRepo) Con.display.push("\x1b[91mThis isn't Git Repo!\x1b[0m");
         else {
             Con.display.push("\x1b[90mPushing to remote...\x1b[0m");
-            runShellTask("git push " + cmd.substr(7));
+            runShellTask("git push " + cmd.substr(5));
         }
     }
 }
